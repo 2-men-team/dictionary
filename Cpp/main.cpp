@@ -17,9 +17,9 @@ int main() {
 	cout << "Type a word to get a definition(type 'exit' to finish):";
 	while (cin >> input) {
 		if(input == "exit") break;
-		string def = table.search(input);
+		string def = table.search(input); // search for the word in dictionary
 		if(def != "False")
-			cout << def << endl;
+			cout << def << endl; // print if found
 
 		cout << "Type a word to get a definition(type 'exit' to finish):";
 	}
