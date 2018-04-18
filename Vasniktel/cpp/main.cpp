@@ -2,10 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
+#include <stdexcept>
 
 #include "hash_table/hash_table.hpp"
 
-#define DICT "dict_processed.txt"
 #define INIT_LENGTH 200
 
 using namespace std;
@@ -15,16 +15,27 @@ HashTable<string, string> parseDict(const char*);
 void process(const HashTable<string, string>&);
 
 // implementation
-int main() {
-  HashTable<string, string> dict = parseDict(DICT);
-  process(dict);
-  return 0;
+int main(int argc, char* argv[]) {
+  try {
+    if (argc != 2) throw runtime_error("Invalid application arguments passed.");
+
+    const char* dictFile = argv[1];
+    HashTable<string, string> dict = parseDict(dictFile);
+    process(dict);
+
+    return 0;
+  } catch (const exception& e) {
+    cout << e.what() << endl;
+    return 1;
+  }
 }
 
 HashTable<string, string> parseDict(const char* file) {
-  HashTable<string, string> dict(INIT_LENGTH);
-
   ifstream fin(file);
+
+  if (!fin) throw runtime_error("Error opening file '"s + file + "'.");
+
+  HashTable<string, string> dict(INIT_LENGTH);
 
   for (string def; getline(fin, def).good(); ) {
     string word = def.substr(0, def.find(';'));
