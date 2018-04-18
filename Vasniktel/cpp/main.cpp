@@ -36,14 +36,17 @@ HashTable<string, string> parseDict(const char* file) {
 }
 
 void process(const HashTable<string, string>& dict) {
+  cout << "Type '^' to exit." << endl << endl;
+
   while (true) {
     string word, def;
     cout << "Type a word to get the definition: ";
     cin >> word;
+
+    if (word == "^") break;
+
     def = "Word '" + word + "' wasn't found in the dictionary";
-
     for (char& c : word) c = toupper(c);
-
     dict.get(word, def);
     cout << def << endl << endl;
   }
