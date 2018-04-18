@@ -26,6 +26,7 @@ private:
 public:
 
   HashTable(std::size_t, float = 0.8, std::size_t = 2);
+  HashTable(const HashTable&);
   ~HashTable();
   HashTable& clear();
   HashTable& put(const KeyType&, const ValType&);
@@ -34,6 +35,7 @@ public:
   std::size_t size() const;
   bool empty() const;
   bool has(const KeyType&) const;
+  HashTable dup() const;
 
 };
 

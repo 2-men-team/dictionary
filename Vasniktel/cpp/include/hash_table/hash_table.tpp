@@ -12,6 +12,10 @@ HashTable<KeyType, ValType, Hash>::HashTable(std::size_t size, float loadFactor,
 }
 
 template <typename KeyType, typename ValType, typename Hash>
+HashTable<KeyType, ValType, Hash>::HashTable(const HashTable<KeyType, ValType, Hash>& other)
+{ *this = other.dup(); }
+
+template <typename KeyType, typename ValType, typename Hash>
 HashTable<KeyType, ValType, Hash>::~HashTable()
 { delete[] this->_table; }
 
@@ -118,4 +122,16 @@ void HashTable<KeyType, ValType, Hash>::_rehash(std::size_t newSize) {
   }
 
   delete[] oldTable;
+}
+
+template <typename KeyType, typename ValType, typename Hash>
+HashTable<KeyType, ValType, Hash> HashTable<KeyType, ValType, Hash>::dup() const {
+  HashTable copied(this->_fullSize, this->_loadFactor, this->_increaseFactor);
+
+  for (std::size_t i = 0; i < this->_fullSize; i++) {
+    copied._table[i] = this->_table[i].dup();
+  }
+
+  copied._usedSize = this->_usedSize;
+  return copied;
 }
