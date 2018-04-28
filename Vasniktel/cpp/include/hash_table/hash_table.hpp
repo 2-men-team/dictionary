@@ -13,7 +13,7 @@ private:
 
   using entry_type = std::pair<KeyType, ValType>;
 
-  DLinkedList<entry_type>* _table;
+  DLinkedList<entry_type>* _table = nullptr;
   std::size_t _fullSize;
   std::size_t _usedSize;
   float _loadFactor;
@@ -25,17 +25,20 @@ private:
 
 public:
 
+  HashTable() = delete;
   HashTable(std::size_t, float = 0.8, std::size_t = 2);
   HashTable(const HashTable&);
+  HashTable(HashTable&&);
+  HashTable& operator=(const HashTable&);
+  HashTable& operator=(HashTable&&);
   ~HashTable();
   HashTable& clear();
   HashTable& put(const KeyType&, const ValType&);
   bool get(const KeyType&, ValType&) const;
-  bool remove(const KeyType&, ValType&);
+  bool remove(const KeyType&);
   std::size_t size() const;
   bool empty() const;
   bool has(const KeyType&) const;
-  HashTable dup() const;
 
 };
 

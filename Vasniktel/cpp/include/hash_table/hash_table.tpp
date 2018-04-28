@@ -13,7 +13,40 @@ HashTable<KeyType, ValType, Hash>::HashTable(std::size_t size, float loadFactor,
 
 template <typename KeyType, typename ValType, typename Hash>
 HashTable<KeyType, ValType, Hash>::HashTable(const HashTable<KeyType, ValType, Hash>& other)
-{ *this = other.dup(); }
+{ *this = other; }
+
+template <typename KeyType, typename ValType, typename Hash>
+HashTable<KeyType, ValType, Hash>::HashTable(HashTable<KeyType, ValType, Hash>&& other)
+{ *this = std::move(other); }
+
+template <typename KeyType, typename ValType, typename Hash>
+HashTable<KeyType, ValType, Hash>& HashTable<KeyType, ValType, Hash>::operator=(const HashTable<KeyType, ValType, Hash>& other) {
+  delete[] this->_table;
+  this->_table = new DLinkedList<entry_type>[other._fullSize];
+
+  for (std::size_t i = 0; i < other._fullSize; i++) {
+    this->_table[i] = other._table[i];
+  }
+
+  this->_fullSize = other._fullSize;
+  this->_usedSize = other._usedSize;
+  this->_loadFactor = other._loadFactor;
+  this->_increaseFactor = other._increaseFactor;
+  return *this;
+}
+
+template <typename KeyType, typename ValType, typename Hash>
+HashTable<KeyType, ValType, Hash>& HashTable<KeyType, ValType, Hash>::operator=(HashTable<KeyType, ValType, Hash>&& other) {
+  delete[] this->_table;
+  this->_table = other._table;
+  other._table = nullptr;
+  this->_fullSize = other._fullSize;
+  this->_usedSize = other._usedSize;
+  this->_loadFactor = other._loadFactor;
+  this->_increaseFactor = other._increaseFactor;
+  other._fullSize = other._usedSize = 0;
+  return *this;
+}
 
 template <typename KeyType, typename ValType, typename Hash>
 HashTable<KeyType, ValType, Hash>::~HashTable()
@@ -62,14 +95,13 @@ bool HashTable<KeyType, ValType, Hash>::get(const KeyType& key, ValType& found) 
 }
 
 template <typename KeyType, typename ValType, typename Hash>
-bool HashTable<KeyType, ValType, Hash>::remove(const KeyType& key, ValType& removed) {
+bool HashTable<KeyType, ValType, Hash>::remove(const KeyType& key) {
   std::size_t position;
   auto& section = this->_table[this->_index(key)];
 
   bool present = !section.each(
-    [&key, &removed, &position](const entry_type& entry, std::size_t i) {
+    [&key, &position](const entry_type& entry, std::size_t i) {
       if (entry.first == key) {
-        removed = entry.second;
         position = i;
         return false;
       }
@@ -122,16 +154,4 @@ void HashTable<KeyType, ValType, Hash>::_rehash(std::size_t newSize) {
   }
 
   delete[] oldTable;
-}
-
-template <typename KeyType, typename ValType, typename Hash>
-HashTable<KeyType, ValType, Hash> HashTable<KeyType, ValType, Hash>::dup() const {
-  HashTable copied(this->_fullSize, this->_loadFactor, this->_increaseFactor);
-
-  for (std::size_t i = 0; i < this->_fullSize; i++) {
-    copied._table[i] = this->_table[i].dup();
-  }
-
-  copied._usedSize = this->_usedSize;
-  return copied;
 }

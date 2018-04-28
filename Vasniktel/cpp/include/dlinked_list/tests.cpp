@@ -12,7 +12,7 @@ int main() {
   for (int i = 0; i < 200; i++) {
     list1.insert(rand() % 601, rand() % (i + 1));
   }
-  cout << list1.sort([](const int& a, const int& b) { return a > b; }).dup() << endl;
+  cout << list1.sort([](const int& a, const int& b) { return a > b; }) << endl;
 
   DLinkedList<int, true> list2 = list1;
 

@@ -1,12 +1,35 @@
 template <typename ValType, bool looped>
-DLinkedList<ValType, looped>::DLinkedList() :
-  _first(nullptr), _last(nullptr), _size(0)
+DLinkedList<ValType, looped>::DLinkedList()
+  : _first(nullptr), _last(nullptr), _size(0)
 { }
 
 template <typename ValType, bool looped>
-DLinkedList<ValType, looped>::DLinkedList(const DLinkedList<ValType, looped>& other) :
-  DLinkedList()
-{ this->append(other); }
+DLinkedList<ValType, looped>::DLinkedList(const DLinkedList<ValType, looped>& other)
+  : DLinkedList()
+{ *this = other; }
+
+template <typename ValType, bool looped>
+DLinkedList<ValType, looped>::DLinkedList(DLinkedList<ValType, looped>&& other)
+  : DLinkedList()
+{ *this = std::move(other); }
+
+template <typename ValType, bool looped>
+DLinkedList<ValType, looped>& DLinkedList<ValType, looped>::operator=(const DLinkedList<ValType, looped>& other) {
+  this->clear();
+  this->append(other);
+  return *this;
+}
+
+template <typename ValType, bool looped>
+DLinkedList<ValType, looped>& DLinkedList<ValType, looped>::operator=(DLinkedList<ValType, looped>&& other) {
+  this->clear();
+  this->_first = other._first;
+  this->_last = other._last;
+  this->_size = other._size;
+  other._first = other._last = nullptr;
+  other._size = 0;
+  return *this;
+}
 
 template <typename ValType, bool looped>
 DLinkedList<ValType, looped>::~DLinkedList()
@@ -119,10 +142,6 @@ DLinkedList<ValType, looped>& DLinkedList<ValType, looped>::insertFront(const Va
 template <typename ValType, bool looped>
 DLinkedList<ValType, looped>& DLinkedList<ValType, looped>::insertBack(const ValType& val)
 { return this->insert(val, this->_size); }
-
-template <typename ValType, bool looped>
-DLinkedList<ValType, looped> DLinkedList<ValType, looped>::dup() const
-{ return DLinkedList<ValType, looped>(*this); }
 
 template <typename ValType, bool looped>
 DLinkedList<ValType, looped>& DLinkedList<ValType, looped>::append(const DLinkedList<ValType, looped>& other) {

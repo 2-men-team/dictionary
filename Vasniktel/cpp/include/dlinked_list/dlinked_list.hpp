@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <utility>
 
 template <typename ValType, bool looped = false>
 class DLinkedList;
@@ -30,13 +31,16 @@ private:
     bool operator!=(const ValType&) const;
   };
 
-  Node* _first;
-  Node* _last;
-  std::size_t _size;
+  Node* _first = nullptr;
+  Node* _last = nullptr;
+  std::size_t _size = 0;
 
 public:
   DLinkedList();
   DLinkedList(const DLinkedList&);
+  DLinkedList(DLinkedList&&);
+  DLinkedList& operator=(const DLinkedList&);
+  DLinkedList& operator=(DLinkedList&&);
   ~DLinkedList();
   DLinkedList& clear();
   long indexOf(const ValType&) const;
@@ -44,7 +48,6 @@ public:
   DLinkedList& insert(const ValType&, std::size_t);
   DLinkedList& insertFront(const ValType&);
   DLinkedList& insertBack(const ValType&);
-  DLinkedList dup() const;
   DLinkedList& append(const DLinkedList&);
   bool has(const ValType&) const;
   std::size_t size() const;
