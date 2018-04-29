@@ -67,12 +67,11 @@ template <typename KeyType, typename ValType, typename Hash>
 typename HashTable<KeyType, ValType, Hash>::entry_type HashTable<KeyType, ValType, Hash>::_makeEntry(
   const KeyType& key,
   const ValType& value
-) const
-{ return std::make_pair(key, value); }
+) { return std::make_pair(key, value); }
 
 template <typename KeyType, typename ValType, typename Hash>
 HashTable<KeyType, ValType, Hash>& HashTable<KeyType, ValType, Hash>::put(const KeyType& key, const ValType& value) {
-  this->_table[this->_index(key)].insertFront(this->_makeEntry(key, value));
+  this->_table[this->_index(key)].insertFront(HashTable::_makeEntry(key, value));
   this->_usedSize++;
 
   if (float(this->_usedSize) / this->_fullSize > this->_loadFactor)

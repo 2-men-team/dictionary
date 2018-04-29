@@ -21,7 +21,7 @@ private:
 
   void _rehash(std::size_t);
   std::size_t _index(const KeyType&) const;
-  entry_type _makeEntry(const KeyType&, const ValType&) const;
+  static entry_type _makeEntry(const KeyType&, const ValType&);
 
 public:
 
