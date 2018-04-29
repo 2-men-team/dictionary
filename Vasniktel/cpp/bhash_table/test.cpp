@@ -5,7 +5,7 @@
 
 #define INIT_SIZE 10
 #define EXIT_SIGN "^"
-#define NOT_FOUND "No such an element in the table."
+#define NOT_FOUND "such an element doesn't exist in the table."
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main() {
     if (entity == "key") table.getByKey(in, out);
     else if (entity == "value") table.getByValue(in, out);
 
-    cout << out << endl;
+    cout << "Result: " << out << endl << endl;
   }
 
   return 0;
