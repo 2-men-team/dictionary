@@ -20,7 +20,7 @@ private:
 public:
 
   BHashTable() = delete;
-  BHashTable(std::size_t, float = 8, std::size_t = 2);
+  BHashTable(std::size_t, float = 0.8, std::size_t = 2);
   BHashTable& clear();
   BHashTable& put(const KeyType&, const ValType&);
   bool getByKey(const KeyType&, ValType&) const;

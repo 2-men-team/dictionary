@@ -49,7 +49,7 @@ HashTable<string, string> parseDict(const char* file) {
 void process(const HashTable<string, string>& dict) {
   cout << "Type '^' to exit." << endl << endl;
 
-  while (true) {
+  while (cin.good()) {
     string word, def;
     cout << "Type a word to get the definition: ";
     cin >> word;

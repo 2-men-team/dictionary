@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <utility>
+
 #include "bhash_table.hpp"
 
 #define INIT_SIZE 10
